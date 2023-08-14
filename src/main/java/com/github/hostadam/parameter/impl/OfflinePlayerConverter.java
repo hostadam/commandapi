@@ -2,13 +2,18 @@ package com.github.hostadam.parameter.impl;
 
 import com.github.hostadam.parameter.ParameterConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-public class PlayerConverter implements ParameterConverter<Player> {
+public class OfflinePlayerConverter implements ParameterConverter<OfflinePlayer> {
     @Override
-    public Player convert(String arg) {
-        return Bukkit.getPlayer(arg);
+    public OfflinePlayer convert(String arg) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(arg);
+        if(!player.hasPlayedBefore()) {
+            return null;
+        }
+
+        return player;
     }
 
     @Override

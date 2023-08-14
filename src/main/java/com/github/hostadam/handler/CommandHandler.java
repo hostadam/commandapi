@@ -6,7 +6,8 @@ import com.github.hostadam.impl.CommandImpl;
 import com.github.hostadam.parameter.ParameterConverter;
 import com.github.hostadam.parameter.impl.BooleanConverter;
 import com.github.hostadam.parameter.impl.IntConverter;
-import com.github.hostadam.parameter.impl.PlayerConverter;
+import com.github.hostadam.parameter.impl.OfflinePlayerConverter;
+import com.github.hostadam.parameter.impl.OnlinePlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
@@ -36,7 +37,8 @@ public class CommandHandler {
 
         this.addConverter(Boolean.class, new BooleanConverter());
         this.addConverter(IntConverter.class, new IntConverter());
-        this.addConverter(PlayerConverter.class, new PlayerConverter());
+        this.addConverter(OfflinePlayerConverter.class, new OfflinePlayerConverter());
+        this.addConverter(OnlinePlayerConverter.class, new OnlinePlayerConverter());
     }
 
     public void register(Object object) {

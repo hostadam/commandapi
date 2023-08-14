@@ -46,25 +46,46 @@ public class BukkitCommand extends org.bukkit.command.Command {
 
         int requiredArgs = (subcommand != null ? subcommand.getCommand().requiredArgs() : this.impl.getCommand().requiredArgs());
         Object[] objects = new Object[this.impl.getMethod().getParameterCount()];
-        if(objects.length == 0 && requiredArgs > 0) {
+        if(objects.length < 1) {
+            return true;
+        }
+
+        if(objects.length < 2 && requiredArgs > 0) {
             sender.sendMessage(subcommand != null ? subcommand.getCommand().usage() : this.impl.getCommand().usage());
             return true;
         }
 
         Parameter[] parameters = impl.getMethod().getParameters();
+        //friend <player>
+        //public void handle(CommandSender, OfflinePlayer)
+
+        //friend Hostadam
+        int argCount = 0;
         for(int i = 0; i < args.length; i++) {
-            if(objects.length < i) {
+            if(i >= objects.length) {
                 break;
             }
 
             Parameter parameter = parameters[i];
             Class<?> clazz = parameter.getType();
-            //TODO: This will be inconsistent with the required args.
+            if(clazz == CommandSender.class) {
+                objects[i] = sender;
+                argCount++;
+                continue;
+            }
+
             if(clazz == String[].class) {
-                objects[i] = Arrays.copyOfRange(args, i, args.length);
+                String[] copy = Arrays.copyOfRange(args, i, args.length);
+                if(argCount + copy.length < requiredArgs) {
+                    sender.sendMessage(subcommand != null ? subcommand.getCommand().usage() : this.impl.getCommand().usage());
+                    return true;
+                }
+
+                objects[i] = copy;
                 break;
             }
 
+            argCount++;
             ParameterConverter<?> converter = this.commandHandler.getConverter(clazz);
             if(converter == null) {
                 continue;
