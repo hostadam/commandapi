@@ -56,8 +56,6 @@ public class BukkitCommand extends org.bukkit.command.Command {
         }
 
         Parameter[] parameters = impl.getMethod().getParameters();
-        //friend <player>
-        //public void handle(CommandSender, OfflinePlayer)
 
         //friend Hostadam
         int argCount = 0;
